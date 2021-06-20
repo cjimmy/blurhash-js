@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Blurhash-js demo</title>
+  <style>
+    h1 {
+      text-align: center;
+    }
+
+    section {
+      width: 40%;
+      margin: 0 30px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    
+    .wrapper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    
+    canvas {
+      display: block;
+      margin-bottom: 16px;
+      width: 100%;
+      background: #ccc;
+    }
+    
+    pre {
+      font-size: 14px;
+      color: white;
+      padding: 8px;
+      background-color: #333;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    
+    label {
+      display: block;
+      padding: 10px 0;
+    }
+    
+    label > span {
+      display: inline-block;
+      width: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>BlurHash demo</h1>
+  <main class="wrapper">
+    <section>
+      <h2>Encode</h2>
+      <img id="original" width="100%"></img>
+      <label>
+        <span>File:</span>
+        <input id="fileinput" type="file" accept="image/*" />
+      </label>
+      <label>
+        <span>Components</span>
+        <input type="number" id="x" value="4" min="1" max="9" />
+        ×
+        <input type="number" id="y" value="3" min="1" max="9" />
+      </label>
+    </section>
+    <section>
+      <h2>Decode</h2>
+        <img id="output" width="100%"></img>
+      <div>
+        Blurhash:<pre id="blurhash">null</pre>
+      </div>
+      <div>
+        data URI:<pre id="datauri">null</pre>
+      </div>
+    </section>
+  </main>
+  <script src="./demo.js"></script>
+</body>
+
+</html>
