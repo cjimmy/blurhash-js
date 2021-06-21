@@ -1,78 +1,36 @@
-# blurhash
+# blurhash (refactored)
 
-[![NPM Version](https://img.shields.io/npm/v/blurhash.svg?style=flat)](https://npmjs.org/package/blurhash)
-[![NPM Downloads](https://img.shields.io/npm/dm/blurhash.svg?style=flat)](https://npmjs.org/package/blurhash)
 
-> JavaScript encoder and decoder for the [Wolt BlurHash](https://github.com/woltapp/blurhash) algorithm
+> Refactored Typescript encoder and decoder for the [@woltapp/blurhash](https://github.com/woltapp/blurhash) algorithm to output data URIs instead of simply drawing to a canvas.
 
-## Install
+## Motivation
 
-```sh
-npm install --save blurhash
-```
+* The original repo no longer appears to be actively maintained.
+* It had many places to be improved, from security to speed, and looking at other PRs, contibuting seemed fruitless.
+* The original repo was written to output to `canvas` elements. With Next.js 11's Image component supporting data URLs, I wanted to extend it to generate a data URL instead of having to embed a `<canvas>` underneath the image.
+* [react-blurhash](https://github.com/woltapp/react-blurhash) exists but I wanted to have something that worked well with Next.js' `<Image>`. Again, I didn't want to overlap two image components.
 
-See [react-blurhash](https://github.com/woltapp/react-blurhash) to use blurhash with React.
 
-## API
+## New additions
 
-### `decode(blurhash: string, width: number, height: number, punch?: number) => Uint8ClampedArray`
+In addition to the original API provided by @woltapp/blurhash, there are two notable changes (and lots of code cleanup)
 
-> Decodes a blurhash string to pixels
+### `<img>` instead of `<canvas>`
+The [demo](demo/index.html) uses <img> elements to display the images at their intended proportions instead of forcing it into certain dimensions on `<canvas>` elements.
 
-#### Example
+### `getDataUrlFromBlurhash(blurhash: string, width: number, height: number, options?: { outputType: 'png' | 'jpeg' | 'webp', quality: number }) => string`
 
-```js
-import { decode } from "blurhash";
+From a blurhash (e.g. `LJONIK5I0V4_9+pfIxE7N3$wIAxA`), this method writes it to a `canvas`, and then uses the `toDataURL()` ([MDN reference]()) to get a data URL that can be used as the `src` for an `<img>` or the `blurDataURL` prop for `next/image`.
 
-const pixels = decode("LEHV6nWB2yk8pyo0adR*.7kCMdnj", 32, 32);
 
-const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
-const imageData = ctx.createImageData(width, height);
-imageData.data.set(pixels);
-ctx.putImageData(imageData, 0, 0);
-document.body.append(canvas);
-```
+## Caveats
 
-### `encode(pixels: Uint8ClampedArray, width: number, height: number, componentX: number, componentY: number) => string`
+### uses `document`
 
-> Encodes pixels to a blurhash string
+`getDataUrlFromBlurhash()` uses `document.createElement` which means it must be used on the clientside. If using Next, this can be done by putting it inside a `useEffect`
 
-```js
-import { encode } from "blurhash";
+### incredibly slow
 
-const loadImage = async src =>
-  new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = (...args) => reject(args);
-    img.src = src;
-  });
+`getDataUrlFromBlurhash()` is slow, sometimes more than a full second. I would not recommend using it to dynamically generate the data URL from the blurhash (which is much smaller to store!). It's how I was hoping to use it, but it's not fast enough.
 
-const getImageData = image => {
-  const canvas = document.createElement("canvas");
-  canvas.width = image.width;
-  canvas.height = image.height;
-  const context = canvas.getContext("2d");
-  context.drawImage(image, 0, 0);
-  return context.getImageData(0, 0, image.width, image.height);
-};
-
-const encodeImageToBlurhash = async imageUrl => {
-  const image = await loadImage(imageUrl);
-  const imageData = getImageData(image);
-  return encode(imageData.data, imageData.width, imageData.height, 4, 4);
-};
-```
-
-### `isBlurhashValid(blurhash: string) => { result: boolean; errorReason?: string }`
-
-```js
-import { isBlurhashValid } from "blurhash";
-
-const validRes = isBlurhashValid("LEHV6nWB2yk8pyo0adR*.7kCMdnj");
-// { result: true }
-
-const invalidRes = isBlurhashValid("???");
-// { result: false, errorReason: "The blurhash string must be at least 6 characters" }
-```
+For these two reasons above, this repo is not published as a package. I am putting it up on Github as others may be able to build upon it.

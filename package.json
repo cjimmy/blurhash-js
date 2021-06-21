@@ -1,12 +1,12 @@
 {
-  "name": "blurhash-js",
+  "name": "@cjimmy/blurhash",
   "version": "0.1.0",
   "description": "Encoder and decoder for the Wolt BlurHash algorithm.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cjimmy/blurhash-js"
+    "url": "git+https://github.com/cjimmy/blurhash-js.git"
   },
   "homepage": "http://blurhash.com",
   "scripts": {
@@ -23,6 +23,7 @@
   "author": "@cjimmy",
   "license": "MIT",
   "devDependencies": {
+    "glob-parent": ">=5.1.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint-plugin-prettier": "^3.4.0",
@@ -34,5 +35,9 @@
     "webpack": "^5.39.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/cjimmy/blurhash-js/issues"
+  },
+  "dependencies": {}
 }

@@ -60,7 +60,7 @@ function generateBlurhash() {
   // because the function is more useful than getting a local blob pointer
   const dataUrl = getDataUrlFromBlurhash(blurhash, width, height, {
     outputType: 'webp',
-    quality: 0.5,
+    quality: 0.3,
   })
 
   // display the data URL string
