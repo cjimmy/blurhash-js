@@ -58,6 +58,7 @@ function generateBlurhash() {
 
   // get data URL from blurhash
   // because the function is more useful than getting a local blob pointer
+  // note, only Chrome can create Webp images with the implementation used
   const dataUrl = getDataUrlFromBlurhash(blurhash, width, height, {
     outputType: 'webp',
     quality: 0.3,

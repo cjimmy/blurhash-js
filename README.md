@@ -1,5 +1,4 @@
-# blurhash (refactored)
-
+# blurhash ts (refactored)
 
 > Refactored Typescript encoder and decoder for the [@woltapp/blurhash](https://github.com/woltapp/blurhash) algorithm to output data URIs instead of simply drawing to a canvas.
 
