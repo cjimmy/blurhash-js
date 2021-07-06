@@ -2,6 +2,8 @@
 
 > Refactored Typescript encoder and decoder for the [@woltapp/blurhash](https://github.com/woltapp/blurhash) algorithm to output data URIs instead of simply drawing to a canvas.
 
+Currently used to power [blurred.dev](https://blurred.dev), a free tool to convert images to blurhashes to data URLs and to play around with the parameters.
+
 ## Motivation
 
 * The original repo no longer appears to be actively maintained.
